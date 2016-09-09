@@ -19,7 +19,6 @@ public class CalendarApp extends JFrame {
 	public static final int FRAME_HEIGHT = 700;
 	public static final int DAY_OF_MONTH_WIDTH = 100;
 	public static final int DAY_OF_MONTH_HEIGHT = 100;
-	public static final boolean MINIMAL_GFX = true;
 
 	private JPanel activePanel;
 	private Views activeView;
@@ -49,12 +48,7 @@ public class CalendarApp extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		if(MINIMAL_GFX)
-		{
-			setExtendedState(JFrame.MAXIMIZED_BOTH);
-			setUndecorated(true);
-		}
+	
 
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS) );
 		
@@ -63,6 +57,7 @@ public class CalendarApp extends JFrame {
 	public void updateCurrentView(){
 		activeView.update();
 	}
+
 	
 
 }

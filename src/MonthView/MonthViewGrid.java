@@ -7,6 +7,7 @@ import java.util.Calendar;
 
 import javax.swing.JPanel;
 
+import Listeners.DatePicker;
 import Records.CachedCalendar;
 import Temp.CalendarApp;
 
@@ -20,8 +21,9 @@ public class MonthViewGrid extends JPanel {
 	 */
 	private static final long serialVersionUID = 6229769874630466647L;
 
+	DatePicker mouseListener;
 	public MonthViewGrid(){
-		
+		mouseListener = new DatePicker();
 		setMinimumSize(new Dimension(CalendarApp.FRAME_WIDTH,CalendarApp.FRAME_HEIGHT));
 		setMaximumSize(new Dimension(CalendarApp.FRAME_WIDTH,CalendarApp.FRAME_HEIGHT));
 		setPreferredSize(new Dimension(CalendarApp.FRAME_WIDTH,CalendarApp.FRAME_HEIGHT));
@@ -42,17 +44,18 @@ public class MonthViewGrid extends JPanel {
 		int plottedDays = 0;
 		
 		for(int i =1 ;i<day; i++, plottedDays++){
-			temp = new MonthViewDay("",new Dimension(CalendarApp.DAY_OF_MONTH_WIDTH,CalendarApp.DAY_OF_MONTH_HEIGHT));
+			temp = new MonthViewDay(null,new Dimension(CalendarApp.DAY_OF_MONTH_WIDTH,CalendarApp.DAY_OF_MONTH_HEIGHT));
 			temp.setBackground(Color.white);
 			add(temp);
 		}
 		for(int i = 1; i<=maxDaysInMonth; i++, plottedDays++){
-			temp = new MonthViewDay((i)+"",new Dimension(CalendarApp.DAY_OF_MONTH_WIDTH,CalendarApp.DAY_OF_MONTH_HEIGHT));
+			temp = new MonthViewDay((i),new Dimension(CalendarApp.DAY_OF_MONTH_WIDTH,CalendarApp.DAY_OF_MONTH_HEIGHT));
 			temp.setBackground(Color.GRAY);
+			temp.addMouseListener(mouseListener);
 			add(temp);
 		}
 		for( ;plottedDays<7*6; plottedDays++){
-			temp = new MonthViewDay("",new Dimension(CalendarApp.DAY_OF_MONTH_WIDTH,CalendarApp.DAY_OF_MONTH_HEIGHT));
+			temp = new MonthViewDay(null,new Dimension(CalendarApp.DAY_OF_MONTH_WIDTH,CalendarApp.DAY_OF_MONTH_HEIGHT));
 			temp.setBackground(Color.white);
 			add(temp);
 		}

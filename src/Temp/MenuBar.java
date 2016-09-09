@@ -25,6 +25,9 @@ public class MenuBar extends JPanel {
 	private JComboBox yearList		= null;
 	private CalendarApp calendarApp	= null;
 	
+	private int Year;
+	private int Month;
+	private int Day;
 	
 
 	public MenuBar(CalendarApp calendarApp){
@@ -33,7 +36,6 @@ public class MenuBar extends JPanel {
 		setMinimumSize(new Dimension(CalendarApp.FRAME_WIDTH,CalendarApp.DAY_OF_MONTH_HEIGHT/2));
 		setMaximumSize(new Dimension(CalendarApp.FRAME_WIDTH,CalendarApp.DAY_OF_MONTH_HEIGHT/2));
 		setPreferredSize(new Dimension(CalendarApp.FRAME_WIDTH,CalendarApp.DAY_OF_MONTH_HEIGHT/2));
-		//this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 	
 		initFormatButtons();
 		initMonthBox();
@@ -51,6 +53,7 @@ public class MenuBar extends JPanel {
 		
 		applyDate.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	SaveNonVol();
 		    	calendarApp.updateCurrentView();
 		    	System.out.println("Update");
 		    	
@@ -59,19 +62,24 @@ public class MenuBar extends JPanel {
 		add(applyDate);
 	}
 	private void initFormatButtons(){
+		JButton year = new JButton("Year");
+		setupButton(year);
 		JButton month = new JButton("Month");
-		month.setMinimumSize(new Dimension(500, 50));
-		month.setMaximumSize(new Dimension(500, 50));
+		setupButton(month);
 		JButton week = new JButton("Week");
-		week.setMinimumSize(new Dimension(150, 50));
-		week.setMaximumSize(new Dimension(150, 50));
+		setupButton(week);
 		JButton day = new JButton("Day");
-		day.setMinimumSize(new Dimension(150, 50));
-		day.setMaximumSize(new Dimension(150, 50));
+		setupButton(day);
+
+		add(year);
 		add(month);
 		add(week);
 		add(day);
 		add(Box.createRigidArea(new Dimension(100, 0)));
+	}
+	private void setupButton(JButton b){
+		b.setMinimumSize(new Dimension(500, 50));
+		b.setMaximumSize(new Dimension(500, 50));
 	}
 	
 	private void initMonthBox(){
@@ -84,6 +92,7 @@ public class MenuBar extends JPanel {
 		
 		monthList = new JComboBox(names);
 		monthList.setSelectedIndex(CachedCalendar.getInstance().Month);
+		this.Month = CachedCalendar.getInstance().Month;
 		monthList.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	storeMonth();
@@ -107,6 +116,7 @@ public class MenuBar extends JPanel {
 		
 		dayList = new JComboBox(names);
 		dayList.setSelectedIndex(CachedCalendar.getInstance().DayOfMonth-1);
+		this.Day = CachedCalendar.getInstance().DayOfMonth-1;
 		dayList.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	storeDay();
@@ -120,6 +130,7 @@ public class MenuBar extends JPanel {
 		
 		yearList = new JComboBox(years);
 		yearList.setSelectedIndex(CachedCalendar.getInstance().Year-2015);
+		this.Year = CachedCalendar.getInstance().Year;
 	
 		yearList.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -138,24 +149,30 @@ public class MenuBar extends JPanel {
 	}
 	
 	private void storeMonth(){
-		CachedCalendar.getInstance().Month = monthList.getSelectedIndex();
-		System.out.println("Month "+CachedCalendar.getInstance().Month);
+		this.Month = monthList.getSelectedIndex();
+		System.out.println("Month "+this.Month);
 	}
 	private void storeDay(){
-		CachedCalendar.getInstance().DayOfMonth = dayList.getSelectedIndex()+1;
-		System.out.println("Day "+CachedCalendar.getInstance().DayOfMonth);
+		this.Day = dayList.getSelectedIndex()+1;
+		System.out.println("Day "+this.Day);
 	}
 	private void storeYear(){
-		CachedCalendar.getInstance().Year = yearList.getSelectedIndex()+2015;
-		System.out.println("Year "+CachedCalendar.getInstance().Year);
+		this.Year = yearList.getSelectedIndex()+2015;
+		System.out.println("Year "+this.Year);
+	}
+	private void SaveNonVol(){
+		CachedCalendar.getInstance().Year = this.Year;
+		CachedCalendar.getInstance().DayOfMonth = this.Day;
+		CachedCalendar.getInstance().Month = this.Month;
+		
 	}
 	
 	private void resetDayBox(){
 		
 		dayList.removeAllItems();
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.MONTH, CachedCalendar.getInstance().Month-1);
-		cal.set(Calendar.YEAR, CachedCalendar.getInstance().Year);
+		cal.set(Calendar.MONTH, this.Month-1);
+		cal.set(Calendar.YEAR, this.Year);
 		
 		int count = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		
